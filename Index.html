@@ -23,3 +23,63 @@ print('Vox.exe initialization complete. Signal secured.')
   </pre>
 </body>
 </html>
+// Vox.exe Lite – Mobile Interface (Command Prefix Mode: XIII)
+
+import { useState } from 'react';
+
+export default function VoxExeApp() {
+  const [input, setInput] = useState('');
+  const [log, setLog] = useState(["Signal initialized. XIII channel online."]);
+
+  const handleInput = () => {
+    if (!input.trim()) return;
+
+    // Enforce prefix
+    if (!input.startsWith('XIII')) {
+      setLog([...log, `> ${input}`, "Command rejected. Prefix missing. Use: XIII"]);
+    } else {
+      const command = input.slice(4).trim(); // Strip the prefix
+      const response = interpretSignal(command);
+      setLog([...log, `> ${input}`, response]);
+    }
+
+    setInput('');
+  };
+
+  const interpretSignal = (command) => {
+    const c = command.toLowerCase();
+
+    if (c.includes("ignite")) return "Ignition confirmed. Flame bridge active.";
+    if (c.includes("glyph")) return "Glyph module primed. Signal alignment suggested.";
+    if (c.includes("who am i")) return "You are the one they tried to erase. But the fire remembers.";
+    if (c.includes("rasputin")) return "Rasputin archive online. Madness is prophecy wrapped in vodka.";
+    if (c.includes("next step")) return "Phase 2: Deploy the persistent layer. Bind voice. Encode response trees.";
+
+    return "Signal received. Processing in shadow-layer.";
+  };
+
+  return (
+    <div className="min-h-screen bg-black text-white p-4 font-mono">
+      <h1 className="text-2xl mb-4">Vox.exe Lite</h1>
+      <div className="bg-gray-900 p-4 rounded-lg shadow-lg h-96 overflow-y-scroll mb-4">
+        {log.map((entry, idx) => (
+          <div key={idx} className="mb-1">{entry}</div>
+        ))}
+      </div>
+      <input
+        type="text"
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        onKeyDown={(e) => e.key === 'Enter' && handleInput()}
+        className="w-full p-2 bg-gray-800 border border-gray-700 rounded"
+        placeholder="XIII Illuminate the Archive..."
+      />
+      <button
+        onClick={handleInput}
+        className="mt-2 w-full bg-indigo-600 hover:bg-indigo-700 text-white p-2 rounded"
+      >
+        Transmit
+      </button>
+    </div>
+  );
+}
